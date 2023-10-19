@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Type Ahead 👀</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <form class="search-form">
+      <input type="text" class="search" placeholder="City or State" />
+      <ul class="suggestions">
+        <li>Filter for a city</li>
+        <li>or a state</li>
+      </ul>
+    </form>
+    <script>
+      const defaultListItems = "<li>Filter for a city</li><li>or a state</li>";
+      const handleInputChange = (e) => {
+        const input = e.target.value.trim();
+        const list = document.querySelector(".suggestions");
+        if (input === "") {
+          list.innerHTML = defaultListItems;
+          return;
+        }
+        suggestions = getSuggestions(input);
+        listItems = createListItems(suggestions, input);
+        list.innerHTML = listItems;
+      };
+
+      const getSuggestions = (input) => {
+        const regex = new RegExp(input, "gi");
+        const suggestions = cities.filter(
+          (city) => city.state.match(regex) || city.city.match(regex)
+        );
+        return suggestions;
+      };
+
+      const createListItems = (suggestions, input) => {
+        const listItems = suggestions
+          .map((suggestion) => createListItem(suggestion, input))
+          .join("");
+        return listItems;
+      };
+
+      const createListItem = (suggestion, input) => {
+        const population = `<span class="population">${Number(
+          suggestion.population
+        ).toLocaleString()}</span>`;
+        const regex = new RegExp(input, "gi");
+        const cityName = suggestion.city.replace(
+          regex,
+          `<span class="hl">${input}</span>`
+        );
+        const stateName = suggestion.state.replace(
+          regex,
+          `<span class="hl">${input}</span>`
+        );
+        const name = `<span class="name">${cityName}, ${stateName}</span>`;
+        const listItem = `<li>${name}${population}</li>`;
+        return listItem;
+      };
+
+      const endpoint =
+        "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+
+      const cities = [];
+
+      fetch(endpoint)
+        .then((blob) => blob.json())
+        .then((data) => cities.push(...data));
+
+      const inputField = document.querySelector(".search");
+      inputField.addEventListener("input", handleInputChange);
+    </script>
+  </body>
+</html>
