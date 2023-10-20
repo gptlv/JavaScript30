@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const MIN_LINE_WIDTH = 1;
+      const MAX_LINE_WIDTH = 100;
+      const MAX_COLOR_VALUE = 255;
+      const COLOR_TRANSITION_LENGTH = 500;
+
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let step = 0;
+      let lineGrowState = true;
+      let color = {
+        red: 255,
+        green: 0,
+        blue: 0,
+      };
+
+      const draw = (e) => {
+        if (!isDrawing) return;
+        step++;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+        updateLineGrowState();
+        updateLineWidth();
+        updateStrokeStyle();
+      };
+
+      const updateLineWidth = () => {
+        if (lineGrowState) {
+          ctx.lineWidth++;
+          return;
+        }
+        ctx.lineWidth--;
+      };
+
+      const updateLineGrowState = () => {
+        if (ctx.lineWidth === MAX_LINE_WIDTH) {
+          lineGrowState = false;
+          return;
+        }
+        if (ctx.lineWidth === MIN_LINE_WIDTH) {
+          lineGrowState = true;
+          return;
+        }
+      };
+
+      const updateStrokeStyle = () => {
+        if (step < COLOR_TRANSITION_LENGTH) {
+          color = {
+            red: MAX_COLOR_VALUE,
+            green: (MAX_COLOR_VALUE * step) / COLOR_TRANSITION_LENGTH,
+            blue: 0,
+          };
+        }
+
+        if (
+          step >= COLOR_TRANSITION_LENGTH &&
+          step < 2 * COLOR_TRANSITION_LENGTH
+        ) {
+          color = {
+            red:
+              (MAX_COLOR_VALUE * (2 * COLOR_TRANSITION_LENGTH - step)) /
+              COLOR_TRANSITION_LENGTH,
+            green: MAX_COLOR_VALUE,
+            blue: 0,
+          };
+        }
+
+        if (
+          step >= 2 * COLOR_TRANSITION_LENGTH &&
+          step < 3 * COLOR_TRANSITION_LENGTH
+        ) {
+          color = {
+            red: 0,
+            green: MAX_COLOR_VALUE,
+            blue:
+              (MAX_COLOR_VALUE * (step - 2 * COLOR_TRANSITION_LENGTH)) /
+              COLOR_TRANSITION_LENGTH,
+          };
+        }
+
+        if (
+          step >= 3 * COLOR_TRANSITION_LENGTH &&
+          step < 4 * COLOR_TRANSITION_LENGTH
+        ) {
+          color = {
+            red: 0,
+            green:
+              (MAX_COLOR_VALUE * (4 * COLOR_TRANSITION_LENGTH - step)) /
+              COLOR_TRANSITION_LENGTH,
+            blue: MAX_COLOR_VALUE,
+          };
+        }
+
+        if (
+          step >= 4 * COLOR_TRANSITION_LENGTH &&
+          step < 5 * COLOR_TRANSITION_LENGTH
+        ) {
+          color = {
+            red:
+              (MAX_COLOR_VALUE * (step - 4 * COLOR_TRANSITION_LENGTH)) /
+              COLOR_TRANSITION_LENGTH,
+            green: 0,
+            blue: MAX_COLOR_VALUE,
+          };
+        }
+
+        if (
+          step >= 5 * COLOR_TRANSITION_LENGTH &&
+          step <= 6 * COLOR_TRANSITION_LENGTH
+        ) {
+          color = {
+            red: MAX_COLOR_VALUE,
+            green: 0,
+            blue:
+              (MAX_COLOR_VALUE * (6 * COLOR_TRANSITION_LENGTH - step)) /
+              COLOR_TRANSITION_LENGTH,
+          };
+          if (step === 6 * COLOR_TRANSITION_LENGTH) {
+            step = 0;
+          }
+        }
+        ctx.strokeStyle = `rgb(${color.red},${color.green}, ${color.blue})`;
+      };
+
+      const canvas = document.querySelector("#draw");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      ctx.strokeStyle = `rgb(${color.red},${color.green}, ${color.blue})`;
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.lineWidth = 10;
+
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      });
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false));
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
+</html>
