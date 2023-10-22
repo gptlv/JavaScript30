@@ -31,6 +31,7 @@ body {
 .player:fullscreen {
   max-width: none;
   width: 100%;
+  display: flex
 }
 
 .player:-webkit-full-screen {
@@ -41,6 +42,7 @@ body {
 .player__video {
   width: 100%;
 }
+
 
 .player__button {
   background: none;
@@ -74,6 +76,10 @@ body {
   background: rgba(0,0,0,0.1);
 }
 
+.fullscreen {
+  max-width: 30px;
+}
+
 .player:hover .player__controls {
   transform: translateY(0);
 }
@@ -101,7 +107,7 @@ body {
   width: 50%;
   background: #ffc600;
   flex: 0;
-  flex-basis: 50%;
+  flex-basis: 0.1%;
 }
 
 /* unholy css to style input type="range" */
