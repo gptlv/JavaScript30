@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mouse Shadow</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="hero">
+      <h1 contenteditable>🔥WOAH!</h1>
+    </div>
+
+    <style>
+      html {
+        color: black;
+        font-family: sans-serif;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+      }
+
+      h1 {
+        text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+        font-size: 100px;
+      }
+    </style>
+
+    <script>
+      // const h1 = document.querySelector("h1");
+
+      // function handleMouseMove(e) {
+      //   const [centerX, centerY] = [this.innerWidth / 2, this.innerHeight / 2];
+      //   const [currentX, currentY] = [e.clientX, e.clientY];
+      //   const [deltaX, deltaY] = [currentX - centerX, currentY - centerY];
+      //   h1.style.textShadow = `${deltaX / 3}px ${
+      //     deltaY / 3
+      //   }px 0 rgba(0,0,0,0.9),
+      //   ${-deltaX / 3}px ${deltaY / 3}px 0 rgba(0,0,0,0.65),
+      //   ${deltaY / 3}px ${deltaX / 3}px 0 rgba(0,0,0,0.4),
+      //   ${-deltaY / 3}px ${-deltaX / 3}px 0 rgba(0,0,0,0.15)`;
+      // }
+
+      // window.addEventListener("mousemove", handleMouseMove);
+      const MAX_WALK = 500;
+
+      const hero = document.querySelector(".hero");
+      const text = document.querySelector("h1");
+
+      const { offsetWidth: width, offsetHeight: height } = hero;
+      console.log(width, height);
+
+      function moveShadow(e) {
+        let { offsetX: x, offsetY: y } = e;
+        if (this !== e.target) {
+          [x, y] = [x + e.target.offsetLeft, y + e.target.offsetTop];
+        }
+        console.log(x, y);
+        const [xWalk, yWalk] = [
+          (x / width) * MAX_WALK - MAX_WALK / 2,
+          (y / height) * MAX_WALK - MAX_WALK / 2,
+        ];
+        // const avg = xWalk + yWalk;
+        text.style.textShadow = `${xWalk}px ${yWalk}px  rgba(255,255,0,1),
+        ${-xWalk}px ${yWalk}px  rgba(0,255,255,1),
+        ${yWalk}px ${-xWalk}px  rgba(255,0,255,1),
+        ${-yWalk}px ${xWalk}px  rgba(0,0,255,1)`;
+      }
+
+      hero.addEventListener("mousemove", moveShadow);
+    </script>
+  </body>
+</html>
