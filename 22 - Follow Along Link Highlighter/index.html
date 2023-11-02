@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>👀👀👀Follow Along Nav</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <nav>
+      <ul class="menu">
+        <li><a href="">Home</a></li>
+        <li><a href="">Order Status</a></li>
+        <li><a href="">Tweets</a></li>
+        <li><a href="">Read Our History</a></li>
+        <li><a href="">Contact Us</a></li>
+      </ul>
+    </nav>
+
+    <div class="wrapper">
+      <p>
+        Lorem ipsum dolor sit amet, <a href="">consectetur</a> adipisicing elit.
+        Est <a href="">explicabo</a> unde natus necessitatibus esse obcaecati
+        distinctio, aut itaque, qui vitae!
+      </p>
+      <p>
+        Aspernatur sapiente quae sint <a href="">soluta</a> modi, atque
+        praesentium laborum pariatur earum <a href="">quaerat</a> cupiditate
+        consequuntur facilis ullam dignissimos, aperiam quam veniam.
+      </p>
+      <p>
+        Cum ipsam quod, incidunt sit ex <a href="">tempore</a> placeat maxime
+        <a href="">corrupti</a> possimus <a href="">veritatis</a> ipsum fugit
+        recusandae est doloremque? Hic, <a href="">quibusdam</a>, nulla.
+      </p>
+      <p>
+        Esse quibusdam, ad, ducimus cupiditate <a href="">nulla</a>, quae magni
+        odit <a href="">totam</a> ut consequatur eveniet sunt quam provident
+        sapiente dicta neque quod.
+      </p>
+      <p>
+        Aliquam <a href="">dicta</a> sequi culpa fugiat
+        <a href="">consequuntur</a> pariatur optio ad minima, maxime
+        <a href="">odio</a>, distinctio magni impedit tempore enim repellendus
+        <a href="">repudiandae</a> quas!
+      </p>
+    </div>
+
+    <script>
+      // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+      const cumulativeOffset = (element) => {
+        let top = 0,
+          left = 0;
+        do {
+          top += element.offsetTop || 0;
+          left += element.offsetLeft || 0;
+          element = element.offsetParent;
+        } while (element);
+
+        return {
+          top: top,
+          left: left,
+        };
+      };
+
+      const createBlob = () => {
+        const blob = document.createElement("div");
+        blob.classList.add("highlight");
+        return blob;
+      };
+
+      const updateBlob = (blob, styles) => {
+        if (!blob) return;
+        Object.assign(blob.style, styles);
+      };
+
+      const handleMouseOver = (e) => {
+        const link = e.currentTarget;
+        const { top: offsetTop, left: offsetLeft } = cumulativeOffset(link);
+
+        const styles = {
+          width: `${link.offsetWidth}px`,
+          height: `${link.offsetHeight}px`,
+          transform: `translate(${offsetLeft}px, ${offsetTop}px)`,
+        };
+        updateBlob(blob, styles);
+      };
+
+      const blob = createBlob();
+      const links = document.querySelectorAll("a");
+
+      links.forEach((link) =>
+        link.addEventListener("mouseover", handleMouseOver)
+      );
+
+      document.querySelector("body").appendChild(blob);
+    </script>
+  </body>
+</html>
